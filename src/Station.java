@@ -8,9 +8,8 @@ public class Station {
 	private HashMap<String, Integer> routes;
 	
 	
-	public Station(String name, HashMap<String, Integer> routes) {
+	public Station(String name) {
 		this.stationName = name;
-		this.routes = routes;
 	}
 	
 	public String getStationName() {
@@ -48,5 +47,11 @@ public class Station {
 		return closestStation;
 	}
 	
+	public void addRoute(String stationName, Integer distance) {
+		if ((!this.routes.containsKey(stationName)) ||
+				(this.routes.get(stationName) > distance)) {
+			this.routes.put(stationName, distance);
+		}
+	}
 
 }
