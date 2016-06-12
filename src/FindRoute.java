@@ -122,6 +122,7 @@ public class FindRoute {
 			// We've searched through all unvisited stations connected to our path so far
 			// and found the closest. Add this station to our visited
 			if (closestUnvisitedName == null) {
+				// could not find any unvisited neighbours
 				loop_flag = false;
 			} else {
 				visited.add(closestUnvisitedName);
