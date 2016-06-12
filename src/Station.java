@@ -7,6 +7,7 @@ public class Station {
 	private String stationName;
 	private HashMap<String, Integer> routes;
 	private Integer lowestCostPath;
+	
 	public Integer getLowestCostPath() {
 		return lowestCostPath;
 	}
@@ -26,6 +27,8 @@ public class Station {
 	private String previousStation;
 	
 	public Station(String name) {
+		this.routes = new HashMap<String, Integer>();
+		this.lowestCostPath = -1;
 		this.stationName = name;
 	}
 	

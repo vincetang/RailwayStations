@@ -22,7 +22,7 @@ public class FindRoute {
 		Station station1, station2;
 		if (!this.stations.containsKey(stationName1)) {
 			station1 = new Station(stationName1);
-			this.stations.put(stationName2, station1);
+			this.stations.put(stationName1, station1);
 		} else {
 			station1 = this.stations.get(stationName1);
 		}
@@ -32,7 +32,6 @@ public class FindRoute {
 			this.stations.put(stationName2, station2);
 		} else {
 			station2 = this.stations.get(stationName2);
-			this.stations.put(stationName2, station2);
 		}
 		
 		station1.addRoute(stationName2, distance);
@@ -41,12 +40,13 @@ public class FindRoute {
 	}
 	
 	private void readFile(String filename) {
-		File file = new File("test.txt");
+		File file = new File(filename);
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
 			String line;
 
+			this.stations = new HashMap<String, Station>();
 			while ((line = br.readLine()) != null) {
 				parseStations(line);
 			}
@@ -54,7 +54,7 @@ public class FindRoute {
 			runMainLoop();
 			
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -75,11 +75,12 @@ public class FindRoute {
 		Integer totalCost, additionalCost, costToStation;
 		String connectedStationName;
 		
-		String closestUnvisitedName = null;
-		Integer lowestCostUnvisited = -1;
-		
+
+		Boolean loop_flag = true;
 		/** loop until every node is visited **/
-		while (visited.size() < this.stations.keySet().size() ) {
+		while (visited.size() < this.stations.keySet().size() && loop_flag) {
+			String closestUnvisitedName = null;
+			Integer lowestCostUnvisited = -1;
 			for (int i = 0; i < visited.size(); i++) {
 				// iterate through all stations connected to visited stations to
 				// find unvisited nodes connected to our path so far
@@ -101,7 +102,8 @@ public class FindRoute {
 						
 						// update if this path is closer than previously calculated
 						if ( (connectedStation.getLowestCostPath() == -1) ||
-								(costToStation < connectedStation.getLowestCostPath())) {
+								 (lowestCostUnvisited.intValue() == -1) || 
+								 (costToStation < connectedStation.getLowestCostPath())) {
 							
 							connectedStation.setLowestCostPath(totalCost+additionalCost);
 							connectedStation.setPreviousStation(currentStation.getStationName());
@@ -115,8 +117,13 @@ public class FindRoute {
 					}
 				}
 				
-				// We've searched through all unvisited stations connected to our path so far
-				// and found the closest. Add this station to our visited
+	
+			}
+			// We've searched through all unvisited stations connected to our path so far
+			// and found the closest. Add this station to our visited
+			if (closestUnvisitedName == null) {
+				loop_flag = false;
+			} else {
 				visited.add(closestUnvisitedName);
 			}
 		}
@@ -167,7 +174,11 @@ public class FindRoute {
 		// prompt user input for two stations (start, end)
 		// run djikstra's algorithm to find shortest path
 		
-		
+		/** to run: FindRoute.class test.csv **/
+		//System.out.println("Args[0]: " + args[0]);
+		FindRoute findRoute = new FindRoute();
+		String filename = args[0];
+		findRoute.readFile(filename);
 		
 	
 	}
