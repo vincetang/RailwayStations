@@ -6,7 +6,24 @@ import java.util.Map;
 public class Station {
 	private String stationName;
 	private HashMap<String, Integer> routes;
-	
+	private Integer lowestCostPath;
+	public Integer getLowestCostPath() {
+		return lowestCostPath;
+	}
+
+	public void setLowestCostPath(Integer lowestCostPath) {
+		this.lowestCostPath = lowestCostPath;
+	}
+
+	public String getPreviousStation() {
+		return previousStation;
+	}
+
+	public void setPreviousStation(String previousStation) {
+		this.previousStation = previousStation;
+	}
+
+	private String previousStation;
 	
 	public Station(String name) {
 		this.stationName = name;
@@ -16,7 +33,7 @@ public class Station {
 		return stationName;
 	}
 
-	public Integer getDistanceTo(String station) {
+	public Integer getDistanceToStation(String station) {
 		if (this.routes.containsKey(station)) {
 			return this.routes.get(station);
 		}
